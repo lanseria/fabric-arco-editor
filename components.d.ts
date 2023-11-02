@@ -9,13 +9,23 @@ declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('@arco-design/web-vue')['Button']
     AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
+    ADivider: typeof import('@arco-design/web-vue')['Divider']
+    AForm: typeof import('@arco-design/web-vue')['Form']
+    AFormItem: typeof import('@arco-design/web-vue')['FormItem']
+    AInput: typeof import('@arco-design/web-vue')['Input']
+    AInputNumber: typeof import('@arco-design/web-vue')['InputNumber']
     ASelect: typeof import('@arco-design/web-vue')['Select']
     ASpace: typeof import('@arco-design/web-vue')['Space']
     ATypography: typeof import('@arco-design/web-vue')['Typography']
     ATypographyTitle: typeof import('@arco-design/web-vue')['TypographyTitle']
+    Header: typeof import('./src/components/Header.vue')['default']
     Hello: typeof import('./src/components/Hello.vue')['default']
+    IconApps: typeof import('@arco-design/web-vue/es/icon')['IconApps']
+    IconImage: typeof import('@arco-design/web-vue/es/icon')['IconImage']
+    IconSave: typeof import('@arco-design/web-vue/es/icon')['IconSave']
     ParentSelect: typeof import('./src/components/ParentSelect.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Side: typeof import('./src/components/Side.vue')['default']
   }
 }
