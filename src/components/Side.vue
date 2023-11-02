@@ -18,6 +18,10 @@ const elementList = [
     label: '颁发日期',
     value: 'ISSUE_DATE',
   },
+  {
+    label: '二维码',
+    value: 'QR_CODE',
+  },
 ]
 function handleSubmit() {
   //
@@ -52,23 +56,23 @@ onMounted(() => {
     <div class="font-bold text-sm mb-20px">
       画布属性
     </div>
-    <AForm :model="paintPropsForm" layout="inline" @submit="handleSubmit">
+    <AForm :model="storeWorkspacePropsForm" layout="inline" @submit="handleSubmit">
       <div grid="~ cols-2">
         <AFormItem field="width" tooltip="宽度" label="宽度">
           <AInputNumber
-            v-model="paintPropsForm.width"
+            v-model="storeWorkspacePropsForm.width"
             placeholder="画布宽度"
           />
         </AFormItem>
         <AFormItem field="height" tooltip="高度" label="高度">
           <AInputNumber
-            v-model="paintPropsForm.height"
+            v-model="storeWorkspacePropsForm.height"
             placeholder="画布高度"
           />
         </AFormItem>
       </div>
 
-      <div grid="~ cols-2" gap-2 w-full>
+      <!-- <div grid="~ cols-2" gap-2 w-full>
         <AButton type="primary" long @click="handleSubmit">
           <template #icon>
             <IconSave />
@@ -81,24 +85,24 @@ onMounted(() => {
           </template>
           选择尺寸
         </AButton>
-      </div>
+      </div> -->
     </AForm>
     <ADivider />
     <div class="font-bold text-sm mb-20px">
       添加元素
     </div>
+    <div v-if="globalBackgroundImage === null" class="text-[rgba(var(--red-6))]">
+      请先上传背景图片
+    </div>
     <div grid="~ cols-2" gap-10px>
-      <div
+      <AButton
         v-for="item in elementList"
         :key="item.value"
-        text-center
-        py-10px
-        cursor-pointer
-        class="bg-[var(--color-fill-2)] hover:bg-[var(--color-fill-3)]"
+        :disabled="globalBackgroundImage === null"
         @click="handleAddText(item)"
       >
         {{ item.label }}
-      </div>
+      </AButton>
     </div>
   </div>
 </template>

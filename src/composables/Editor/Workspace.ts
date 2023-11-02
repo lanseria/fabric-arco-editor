@@ -39,10 +39,10 @@ export function useFabricWorkspace(options: {
     const viewPortWidth = width.value
     const viewPortHeight = height.value
     // 按照宽度
-    if (viewPortWidth / viewPortHeight < paintPropsForm.value.width / paintPropsForm.value.height)
-      return viewPortWidth / paintPropsForm.value.width
+    if (viewPortWidth / viewPortHeight < storeWorkspacePropsForm.value.width / storeWorkspacePropsForm.value.height)
+      return viewPortWidth / storeWorkspacePropsForm.value.width
     // 按照宽度缩放
-    return viewPortHeight / paintPropsForm.value.height
+    return viewPortHeight / storeWorkspacePropsForm.value.height
   }
   /**
    * 设置缩放
@@ -83,10 +83,10 @@ export function useFabricWorkspace(options: {
     _initBackground(canvas)
     const workspace = new fabric.Rect({
       fill: 'rgba(255,255,255,1)',
-      width: paintPropsForm.value.width,
-      height: paintPropsForm.value.height,
-      left: (canvas.width! - paintPropsForm.value.width) / 2,
-      top: (canvas.height! - paintPropsForm.value.height) / 2,
+      width: storeWorkspacePropsForm.value.width,
+      height: storeWorkspacePropsForm.value.height,
+      left: (canvas.width! - storeWorkspacePropsForm.value.width) / 2,
+      top: (canvas.height! - storeWorkspacePropsForm.value.height) / 2,
       id: 'workspace',
     })
     workspace.set('selectable', false)
@@ -94,16 +94,22 @@ export function useFabricWorkspace(options: {
     workspace.hoverCursor = 'default'
     canvas.add(workspace)
   }
+  function _setWorkspaceSize(canvas: fabric.Canvas) {
+    const workspace = canvas.getObjects().find(item => item.id === 'workspace')
+    if (!workspace)
+      return
+    workspace.set({ width: storeWorkspacePropsForm.value.width, height: storeWorkspacePropsForm.value.height })
+    _autoScale()
+  }
   onMounted(() => {
-    watchDebounced(() => paintPropsForm.value, () => {
-      console.warn('watchDebounced', paintPropsForm.value)
+    watchDebounced([storeWorkspacePropsForm.value], () => {
+      console.warn('watchDebounced', storeWorkspacePropsForm.value)
       if (width.value && height.value && window.canvas) {
-        _initBackground(window.canvas)
-        _initWorkspace(window.canvas)
-        _autoScale()
-        isLoad.value = true
+        console.warn('resize workspace')
+        _setWorkspaceSize(window.canvas)
       }
     }, { debounce: 500, maxWait: 1000 })
+
     watchDebounced([width, height], () => {
       console.warn('watchDebounced', width.value, height.value)
       if (height.value && width.value && window.canvas) {

@@ -6,10 +6,9 @@ const { open, reset, onChange } = useFileDialog({
   accept: 'image/*', // Set to accept only image files
   multiple: false,
 })
-function handleSetBackgroundImage() {
+function handleSetglobalBackgroundImage() {
   open()
 }
-let backgroundImage: fabric.Image
 onChange((files) => {
   const { canvas } = window
   if (!canvas) {
@@ -50,34 +49,72 @@ onChange((files) => {
         // height: workspace.height,
       })
       // 移除之前的背景图片
-      if (backgroundImage)
-        canvas.remove(backgroundImage)
+      if (globalBackgroundImage.value)
+        canvas.remove(globalBackgroundImage.value)
 
       canvas.add(imgInstance)
       canvas.setActiveObject(imgInstance)
       // 更新背景图片变量
-      backgroundImage = imgInstance
+      globalBackgroundImage.value = imgInstance
       canvas.renderAll()
     })
     reset()
   }
 })
+function handleSave() {
+  const { canvas } = window
+  if (canvas) {
+    const objects = canvas.getObjects()
+    // 遍历所有元素
+    objects.forEach((object) => {
+      // 获取相对定位
+      const left = object.left
+      const top = object.top
+
+      // 获取宽度和高度
+      const width = object.width
+      const height = object.height
+
+      // 检查元素类型
+      if (object.type === 'text') {
+        // 文字元素的字体和大小
+        const fontFamily = object.fontFamily
+        const fontSize = object.fontSize
+        console.log(object)
+        // 在控制台打印信息
+        console.log('Left:', left, 'Top:', top, 'Width:', width, 'Height:', height, 'Font Family:', fontFamily, 'Font Size:', fontSize)
+      }
+      else {
+        // 非文字元素的处理
+        // ...
+      }
+    })
+  }
+}
 </script>
 
 <template>
-  <div class="h-68px px-20px flex items-center shadow">
+  <div class="h-68px px-20px flex items-center shadow justify-between">
     <ASpace align="center">
       <img class="w-30px h-30px mr-10px" src="/logo.svg" alt="logo">
       <div class="font-bold text-size-18px">
         设置模板
       </div>
-      <AButton type="primary" shape="round" @click="handleSetBackgroundImage">
+      <Hello />
+    </ASpace>
+    <ASpace>
+      <AButton type="primary" shape="round" @click="handleSetglobalBackgroundImage">
         <template #icon>
           <IconImage />
         </template>
         上传背景图片
       </AButton>
-      <Hello />
+      <AButton type="primary" shape="round" @click="handleSave">
+        <template #icon>
+          <IconSave />
+        </template>
+        保存
+      </AButton>
     </ASpace>
   </div>
 </template>
