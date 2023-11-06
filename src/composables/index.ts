@@ -1,3 +1,3 @@
 export * from './dark'
-export * from './Editor'
 export * from './store'
+export * from './fabric'

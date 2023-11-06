@@ -1,50 +1,57 @@
 <script lang="ts" setup>
+import { Message } from '@arco-design/web-vue'
 import { fabric } from 'fabric'
 
-const elementList = [
-  {
-    label: '姓名',
-    value: 'USER_NAME',
-  },
-  {
-    label: '培训名称',
-    value: 'COURSE_NAME',
-  },
-  {
-    label: '考试名称',
-    value: 'EXAM_NAME',
-  },
-  {
-    label: '颁发日期',
-    value: 'ISSUE_DATE',
-  },
-  {
-    label: '二维码',
-    value: 'QR_CODE',
-  },
-]
+const { WORKSPACE_ID, elementList, canvas, workspaceProps, canvasBackgroundImage, setBackgroundByUrl } = useFabricStore()
+const { open, reset, onChange } = useFileDialog({
+  accept: 'image/*', // Set to accept only image files
+  multiple: false,
+})
+
+onChange((files) => {
+  if (!canvas.value) {
+    Message.warning('canvas 不存在')
+    return
+  }
+  if (files?.length === 0) {
+    reset()
+  }
+  else {
+    const file = files![0]
+    const url = useObjectUrl(file)
+    setBackgroundByUrl(url.value!)
+    reset()
+  }
+})
 function handleSubmit() {
   //
 }
 function handleAddText(item: { label: string; value: string }) {
-  const { canvas } = window
-  if (canvas) {
-    const workspace = canvas.getObjects().find(item => item.id === 'workspace')
-    if (!workspace)
-      return
-    const text = new fabric.Text(item.label, {
-      left: workspace.left! + workspace.width! / 2,
-      top: workspace.top! + workspace.height! / 2,
-      fontSize: 30,
-      textAlign: 'center',
-      originX: 'center',
-      originY: 'center',
-    })
-    canvas.add(text)
-    canvas.bringToFront(text)
-    canvas.setActiveObject(text)
-    canvas.renderAll()
+  if (!canvas.value)
+    return
+  const workspace = canvas.value.getObjects().find(item => item.id === WORKSPACE_ID)
+  if (!workspace) {
+    console.warn('没有找到工作区')
+    return
   }
+  const text = new fabric.Text(item.label, {
+    left: workspace.left! + workspace.width! / 2,
+    top: workspace.top! + workspace.height! / 2,
+    fontSize: 30,
+    textAlign: 'center',
+    originX: 'center',
+    originY: 'center',
+    hasControls: false,
+    lockScalingX: true,
+    lockScalingY: true,
+    lockRotation: true, // 锁定旋转
+  })
+  canvas.value.add(text)
+  canvas.value.setActiveObject(text)
+  canvas.value.renderAll()
+}
+function handleSetBackgroundImage() {
+  open()
 }
 onMounted(() => {
 
@@ -56,17 +63,17 @@ onMounted(() => {
     <div class="font-bold text-sm mb-20px">
       画布属性
     </div>
-    <AForm :model="storeWorkspacePropsForm" layout="inline" @submit="handleSubmit">
+    <AForm :model="workspaceProps" layout="inline" @submit="handleSubmit">
       <div grid="~ cols-2">
         <AFormItem field="width" tooltip="宽度" label="宽度">
           <AInputNumber
-            v-model="storeWorkspacePropsForm.width"
+            v-model="workspaceProps.width"
             placeholder="画布宽度"
           />
         </AFormItem>
         <AFormItem field="height" tooltip="高度" label="高度">
           <AInputNumber
-            v-model="storeWorkspacePropsForm.height"
+            v-model="workspaceProps.height"
             placeholder="画布高度"
           />
         </AFormItem>
@@ -87,18 +94,30 @@ onMounted(() => {
         </AButton>
       </div> -->
     </AForm>
+
+    <ADivider />
+
+    <div class="font-bold text-sm mb-20px">
+      设置证书背景
+    </div>
+    <AButton type="primary" shape="round" @click="handleSetBackgroundImage">
+      <template #icon>
+        <IconImage />
+      </template>
+      上传背景图片
+    </AButton>
     <ADivider />
     <div class="font-bold text-sm mb-20px">
       添加元素
     </div>
-    <div v-if="globalBackgroundImage === null" class="text-[rgba(var(--red-6))]">
+    <div v-if="!canvasBackgroundImage" class="text-[rgba(var(--red-6))]">
       请先上传背景图片
     </div>
     <div grid="~ cols-2" gap-10px>
       <AButton
         v-for="item in elementList"
         :key="item.value"
-        :disabled="globalBackgroundImage === null"
+        :disabled="!canvasBackgroundImage"
         @click="handleAddText(item)"
       >
         {{ item.label }}
