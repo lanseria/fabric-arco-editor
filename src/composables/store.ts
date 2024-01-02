@@ -1,5 +1,6 @@
 import type { IDataURLOptions } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
+import { cloneDeep } from 'lodash-es'
 
 interface CanvasObjects {
   id: string
@@ -9,6 +10,12 @@ interface CanvasObjects {
   value: string
 }
 export const useFabricStore = createGlobalState(() => {
+  // mock data
+  const mockData = {
+    width: 1200,
+    height: 876,
+    backgroundImageBase64: imageBase64,
+  }
   // constants
   const PREVIEW_URL_OPTIONS = {
     format: 'png',
@@ -52,6 +59,10 @@ export const useFabricStore = createGlobalState(() => {
 
   // ref
   const canvasObjectsToBeAdded = ref<CanvasObjects[]>([])
+  const formData = ref({
+    width: FABRIC_WIDTH,
+    height: FABRIC_HEIGHT,
+  })
 
   // computed
   const canvasTemplateTextValues = computed(() => {
@@ -151,7 +162,13 @@ export const useFabricStore = createGlobalState(() => {
       })
     })
   }
+  // expose methods
+  function handleMockFetch() {
+    formData.value = cloneDeep(mockData)
+  }
+  function handleEdit() {
 
+  }
   return {
     // constants
     PREVIEW_URL_OPTIONS,
@@ -171,5 +188,7 @@ export const useFabricStore = createGlobalState(() => {
     getDataURLOptions,
     _base64ToBlobUrl,
     setBackgroundByUrl,
+    // expose methods
+    handleMockFetch,
   }
 })

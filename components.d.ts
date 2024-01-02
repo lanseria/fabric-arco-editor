@@ -21,6 +21,7 @@ declare module 'vue' {
     Header: typeof import('./src/components/Header.vue')['default']
     Hello: typeof import('./src/components/Hello.vue')['default']
     IconApps: typeof import('@arco-design/web-vue/es/icon')['IconApps']
+    IconBug: typeof import('@arco-design/web-vue/es/icon')['IconBug']
     IconImage: typeof import('@arco-design/web-vue/es/icon')['IconImage']
     IconSave: typeof import('@arco-design/web-vue/es/icon')['IconSave']
     ParentSelect: typeof import('./src/components/ParentSelect.vue')['default']
