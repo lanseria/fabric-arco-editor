@@ -1,30 +1,32 @@
 import type { IDataURLOptions } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
-import { cloneDeep } from 'lodash-es'
+import type { CanvasObjects } from './types'
 
-interface CanvasObjects {
-  id: string
-  type: string
-  left: number
-  top: number
-  value: string
-}
 export const useFabricStore = createGlobalState(() => {
-  // mock data
-  const mockData = {
-    width: 1200,
-    height: 876,
-    backgroundImageBase64: imageBase64,
-  }
   // constants
+  /**
+   * 预览图片配置
+   */
   const PREVIEW_URL_OPTIONS = {
     format: 'png',
     quality: 0.8,
     multiplier: 1,
   }
+  /**
+   * 默认画布宽高
+   */
   const FABRIC_WIDTH = 1200
+  /**
+   * 默认画布宽高
+   */
   const FABRIC_HEIGHT = 876
+  /**
+   * 默认画布背景元素ID
+   */
   const WORKSPACE_ID = 'workspace'
+  /**
+   * 预设可以添加模板的字段
+   */
   const ELEMENT_LIST = [
     {
       label: '{{姓名}}',
@@ -48,29 +50,53 @@ export const useFabricStore = createGlobalState(() => {
     },
   ]
 
+  /**
+   * init function
+   * @returns init functionz
+   */
+  function initCanvasWorkspaceProps() {
+    return {
+      width: FABRIC_WIDTH,
+      height: FABRIC_HEIGHT,
+    }
+  }
+
   // shallowRef
+  /**
+   * 画布对象变量
+   */
   const canvas = shallowRef<fabric.Canvas>()
+  /**
+   * 背景图片链接变量
+   */
   const canvasBackgroundUrl = shallowRef<string>('')
+  /**
+   * 背景图片对象变量
+   */
   const canvasBackgroundImage = shallowRef<fabric.Image>()
-  const workspaceProps = ref({
-    width: FABRIC_WIDTH,
-    height: FABRIC_HEIGHT,
-  })
 
   // ref
+  /**
+   * 画布属性
+   */
+  const canvasWorkspaceProps = ref(initCanvasWorkspaceProps())
+  /**
+   * 画布中对象
+   */
   const canvasObjectsToBeAdded = ref<CanvasObjects[]>([])
-  const formData = ref({
-    width: FABRIC_WIDTH,
-    height: FABRIC_HEIGHT,
-  })
 
   // computed
+  /**
+   * 画布中文本
+   */
   const canvasTemplateTextValues = computed(() => {
     if (!canvas.value)
       return []
     return canvas.value.getObjects().filter(item => item.type === 'text').map(item => item.id)
   })
-
+  /**
+   * 画布中元素
+   */
   const elementList = computed(() => {
     return ELEMENT_LIST.map((item) => {
       return {
@@ -81,6 +107,10 @@ export const useFabricStore = createGlobalState(() => {
   })
 
   // methods
+  /**
+   * 获取预览图片的链接配置
+   * @returns
+   */
   function getDataURLOptions(): IDataURLOptions {
     const workspace = canvas.value?.getObjects().find(item => item.id === 'workspace')
     if (!workspace)
@@ -96,6 +126,11 @@ export const useFabricStore = createGlobalState(() => {
     }
   }
 
+  /**
+   * base64转为Url
+   * @param base64
+   * @returns
+   */
   function _base64ToBlobUrl(base64: string): string {
     // 删除数据类型和编码信息
     const base64WithoutInfo = base64.split(',')[1]
@@ -116,7 +151,11 @@ export const useFabricStore = createGlobalState(() => {
 
     return blobUrl
   }
-
+  /**
+   * 通过url设置背景
+   * @param url
+   * @returns
+   */
   function setBackgroundByUrl(url: string): Promise<fabric.Image> {
     return new Promise((resolve, reject) => {
       url && fabric.Image.fromURL(url, (imgInstance) => {
@@ -162,13 +201,7 @@ export const useFabricStore = createGlobalState(() => {
       })
     })
   }
-  // expose methods
-  function handleMockFetch() {
-    formData.value = cloneDeep(mockData)
-  }
-  function handleEdit() {
 
-  }
   return {
     // constants
     PREVIEW_URL_OPTIONS,
@@ -179,7 +212,7 @@ export const useFabricStore = createGlobalState(() => {
     canvasBackgroundUrl,
     canvasBackgroundImage,
     // ref
-    workspaceProps,
+    canvasWorkspaceProps,
     canvasObjectsToBeAdded,
     canvasTemplateTextValues,
     // computed
@@ -188,7 +221,5 @@ export const useFabricStore = createGlobalState(() => {
     getDataURLOptions,
     _base64ToBlobUrl,
     setBackgroundByUrl,
-    // expose methods
-    handleMockFetch,
   }
 })

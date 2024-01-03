@@ -2,12 +2,17 @@ import { fabric } from 'fabric'
 
 export function useFabric(options: {
   WrapRef: Ref<HTMLDivElement>
+  CanvasRef: Ref<HTMLCanvasElement>
 }) {
-  //
-  const { WrapRef } = options
+  /**
+   * 获取工作区Ref
+   */
+  const { WrapRef, CanvasRef } = options
+
   // use hooks
-  const { WORKSPACE_ID, canvas, workspaceProps } = useFabricStore()
+  const { WORKSPACE_ID, canvas, canvasWorkspaceProps } = useFabricStore()
   const { width: wrapWidth, height: wrapHeight } = useElementSize(WrapRef)
+
   // ref
   const isLoad = ref(false)
 
@@ -87,10 +92,10 @@ export function useFabric(options: {
   function _initWorkspace(canvas: fabric.Canvas) {
     const workspace = new fabric.Rect({
       fill: 'rgba(255,255,255,1)',
-      width: workspaceProps.value.width,
-      height: workspaceProps.value.height,
-      left: (canvas.width! - workspaceProps.value.width) / 2,
-      top: (canvas.height! - workspaceProps.value.height) / 2,
+      width: canvasWorkspaceProps.value.width,
+      height: canvasWorkspaceProps.value.height,
+      left: (canvas.width! - canvasWorkspaceProps.value.width) / 2,
+      top: (canvas.height! - canvasWorkspaceProps.value.height) / 2,
       id: WORKSPACE_ID,
     })
     workspace.set('selectable', false)
@@ -98,10 +103,14 @@ export function useFabric(options: {
     workspace.hoverCursor = 'default'
     canvas.add(workspace)
   }
+  /**
+   * 初始化画布
+   * @param canvas
+   */
   function _initCanvasWorkspace(canvas: fabric.Canvas) {
     _initBackground(canvas)
     _autoSetCanvasWidthHeight(canvas)
-    // ADD 删除图标
+    // 添加删除图标
     _deleteControl(canvas)
     // 初始化画布
     _initWorkspace(canvas)
@@ -112,10 +121,10 @@ export function useFabric(options: {
    */
   function _getWorkspaceScale() {
     // 按照宽度
-    if (wrapWidth.value / wrapHeight.value < workspaceProps.value.width / workspaceProps.value.height)
-      return wrapWidth.value / workspaceProps.value.width
+    if (wrapWidth.value / wrapHeight.value < canvasWorkspaceProps.value.width / canvasWorkspaceProps.value.height)
+      return wrapWidth.value / canvasWorkspaceProps.value.width
     // 按照宽度缩放
-    return wrapHeight.value / workspaceProps.value.height
+    return wrapHeight.value / canvasWorkspaceProps.value.height
   }
 
   /**
@@ -153,12 +162,24 @@ export function useFabric(options: {
       canvas.requestRenderAll()
     })
   }
+  /**
+   * 画布自动缩放
+   * @param canvas
+   */
   function _workspaceAutoZoom(canvas: fabric.Canvas) {
     const scale = _getWorkspaceScale()
     _setWorkspaceZoom(canvas, scale - 0.1)
   }
   // hooks
   onMounted(() => {
+    const value = new fabric.Canvas(CanvasRef.value, {
+      preserveObjectStacking: true,
+      fireRightClick: true, // 启用右键，button的数字为3
+      stopContextMenu: true, // 禁止默认右键菜单
+      controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
+    })
+    canvas.value = value
+    // 监听宽高变化
     watchDebounced([wrapWidth, wrapHeight], () => {
       console.warn('[watchDebounced] width, height', wrapWidth.value, wrapHeight.value)
       if (wrapHeight.value && wrapWidth.value && canvas.value) {

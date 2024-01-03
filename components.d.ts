@@ -19,9 +19,11 @@ declare module 'vue' {
     IconBug: typeof import('@arco-design/web-vue/es/icon')['IconBug']
     IconImage: typeof import('@arco-design/web-vue/es/icon')['IconImage']
     IconSave: typeof import('@arco-design/web-vue/es/icon')['IconSave']
+    Mode: typeof import('./src/components/Mode.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Side: typeof import('./src/components/Side.vue')['default']
+    SourceMode: typeof import('./src/components/SourceMode.vue')['default']
     Workspace: typeof import('./src/components/Workspace.vue')['default']
   }
 }

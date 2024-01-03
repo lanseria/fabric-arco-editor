@@ -2,7 +2,7 @@
 import { Message } from '@arco-design/web-vue'
 import { fabric } from 'fabric'
 
-const { WORKSPACE_ID, elementList, canvas, workspaceProps, canvasBackgroundImage, setBackgroundByUrl } = useFabricStore()
+const { WORKSPACE_ID, elementList, canvas, canvasWorkspaceProps, canvasBackgroundImage, setBackgroundByUrl } = useFabricStore()
 const { open, reset, onChange } = useFileDialog({
   accept: 'image/*', // Set to accept only image files
   multiple: false,
@@ -26,7 +26,7 @@ onChange((files) => {
 function handleSubmit() {
   //
 }
-function handleAddText(item: { label: string; value: string }) {
+function handleAddText(item: { label: string, value: string }) {
   if (!canvas.value)
     return
   const workspace = canvas.value.getObjects().find(item => item.id === WORKSPACE_ID)
@@ -63,17 +63,17 @@ onMounted(() => {
     <div class="font-bold text-sm mb-20px">
       画布属性
     </div>
-    <AForm :model="workspaceProps" layout="inline" @submit="handleSubmit">
+    <AForm :model="canvasWorkspaceProps" layout="inline" @submit="handleSubmit">
       <div grid="~ cols-2">
         <AFormItem field="width" tooltip="宽度" label="宽度">
           <AInputNumber
-            v-model="workspaceProps.width"
+            v-model="canvasWorkspaceProps.width"
             placeholder="画布宽度"
           />
         </AFormItem>
         <AFormItem field="height" tooltip="高度" label="高度">
           <AInputNumber
-            v-model="workspaceProps.height"
+            v-model="canvasWorkspaceProps.height"
             placeholder="画布高度"
           />
         </AFormItem>

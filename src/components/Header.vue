@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { canvas, WORKSPACE_ID, handleMockFetch } = useFabricStore()
+const { canvas, WORKSPACE_ID } = useFabricStore()
 function handlePreview() {
   //
 }
@@ -32,10 +32,10 @@ function handleSave() {
       <div class="font-bold text-size-18px">
         设置模板
       </div>
-      <Hello />
+      <SourceMode />
     </ASpace>
     <ASpace>
-      <AButton type="primary" shape="round" @click="handleMockFetch">
+      <AButton type="primary" shape="round">
         <template #icon>
           <IconBug />
         </template>
