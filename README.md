@@ -1,5 +1,9 @@
 # Fabric Arco editor
 
+这个项目是一个简单的前端示例，使用 `fabric.js` 和 `vue.js` 进行构建，其中 `arco-design` 作为框架。网页的主要功能是提供一个类似证书模板的设计器。
+
+This project is a simple frontend demo built using `fabric.js` and `vue.js`, with `arco-design` as the framework. The webpage primarily serves as a designer for a certificate template.
+
 ## 当前的功能
 
 - 首先，会有一个画布
