@@ -1,54 +1,33 @@
 <script lang="ts" setup>
 import { Message } from '@arco-design/web-vue'
-import { fabric } from 'fabric'
+import type { CanvasElementProps } from '~/composables/types'
 
-const { WORKSPACE_ID, elementList, canvas, canvasWorkspaceProps, canvasBackgroundImage, setBackgroundByUrl } = useFabricStore()
 const { open, reset, onChange } = useFileDialog({
   accept: 'image/*', // Set to accept only image files
   multiple: false,
 })
 
 onChange((files) => {
-  if (!canvas.value) {
+  if (!storeCanvas.value) {
     Message.warning('canvas 不存在')
     return
   }
-  if (files?.length === 0) {
-    reset()
-  }
-  else {
-    const file = files![0]
-    const url = useObjectUrl(file)
-    setBackgroundByUrl(url.value!)
-    reset()
+  if (files) {
+    // 获取第一个文件
+    const filesList = Array.from(files)
+    if (filesList.length === 0) {
+      reset()
+    }
+    else {
+      const file = filesList[0]
+      const url = useObjectUrl(file)
+      canvasSetBackgroundByUrl(url.value!)
+      reset()
+    }
   }
 })
-function handleSubmit() {
-  //
-}
-function handleAddText(item: { label: string, value: string }) {
-  if (!canvas.value)
-    return
-  const workspace = canvas.value.getObjects().find(item => item.id === WORKSPACE_ID)
-  if (!workspace) {
-    console.warn('没有找到工作区')
-    return
-  }
-  const text = new fabric.Text(item.label, {
-    left: workspace.left! + workspace.width! / 2,
-    top: workspace.top! + workspace.height! / 2,
-    fontSize: 30,
-    textAlign: 'center',
-    originX: 'center',
-    originY: 'center',
-    hasControls: false,
-    lockScalingX: true,
-    lockScalingY: true,
-    lockRotation: true, // 锁定旋转
-  })
-  canvas.value.add(text)
-  canvas.value.setActiveObject(text)
-  canvas.value.renderAll()
+function handleAddElement(item: CanvasElementProps) {
+  canvasAddElement(item)
 }
 function handleSetBackgroundImage() {
   open()
@@ -63,17 +42,23 @@ onMounted(() => {
     <div class="font-bold text-sm mb-20px">
       画布属性
     </div>
-    <AForm :model="canvasWorkspaceProps" layout="inline" @submit="handleSubmit">
+    <AForm :model="storeCanvasProps" layout="inline">
       <div grid="~ cols-2">
-        <AFormItem field="width" tooltip="宽度" label="宽度">
+        <AFormItem field="width" tooltip="宽度小于4k像素大于1像素" label="宽度">
           <AInputNumber
-            v-model="canvasWorkspaceProps.width"
+            v-model="storeCanvasProps.width"
+            :max="4096"
+            :min="1"
+            :precision="0"
             placeholder="画布宽度"
           />
         </AFormItem>
-        <AFormItem field="height" tooltip="高度" label="高度">
+        <AFormItem field="height" tooltip="高度小于4k像素大于1像素" label="高度">
           <AInputNumber
-            v-model="canvasWorkspaceProps.height"
+            v-model="storeCanvasProps.height"
+            :max="4096"
+            :min="1"
+            :precision="0"
             placeholder="画布高度"
           />
         </AFormItem>
@@ -110,18 +95,22 @@ onMounted(() => {
     <div class="font-bold text-sm mb-20px">
       添加元素
     </div>
-    <div v-if="!canvasBackgroundImage" class="text-[rgba(var(--red-6))]">
+    <div v-if="!storeCanvasBackgroundImage" class="text-[rgba(var(--red-6))]">
       请先上传背景图片
     </div>
     <div grid="~ cols-2" gap-10px>
-      <AButton
-        v-for="item in elementList"
-        :key="item.value"
-        :disabled="!canvasBackgroundImage"
-        @click="handleAddText(item)"
+      <div
+        v-for="item in storeElementList"
+        :key="item.id"
       >
-        {{ item.label }}
-      </AButton>
+        <AButton
+          long
+          :disabled="!storeCanvasBackgroundImage || item.disabled"
+          @click="handleAddElement(item)"
+        >
+          {{ item.value }}
+        </AButton>
+      </div>
     </div>
   </div>
 </template>

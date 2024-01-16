@@ -12,13 +12,31 @@ declare global {
   const $ref: typeof import('vue/macros')['$ref']
   const $shallowRef: typeof import('vue/macros')['$shallowRef']
   const $toRef: typeof import('vue/macros')['$toRef']
+  const BACKGROUND_ID: typeof import('./src/composables/constant')['BACKGROUND_ID']
   const CanvasEditor: typeof import('./src/composables/Editor/index')['CanvasEditor']
+  const DEFAULT_IMAGE_OPTIONS: typeof import('./src/composables/constant')['DEFAULT_IMAGE_OPTIONS']
+  const DEFAULT_TEXT_OPTIONS: typeof import('./src/composables/constant')['DEFAULT_TEXT_OPTIONS']
+  const ELEMENT_LIST: typeof import('./src/composables/constant')['ELEMENT_LIST']
   const Editor: typeof import('./src/composables/Editor/index')['default']
   const EffectScope: typeof import('vue')['EffectScope']
+  const FABRIC_HEIGHT: typeof import('./src/composables/constant')['FABRIC_HEIGHT']
+  const FABRIC_WIDTH: typeof import('./src/composables/constant')['FABRIC_WIDTH']
   const MOCK_DATA: typeof import('./src/composables/constant')['MOCK_DATA']
+  const PREVIEW_URL_OPTIONS: typeof import('./src/composables/constant')['PREVIEW_URL_OPTIONS']
+  const QR_CODE_IMAGE_URL: typeof import('./src/composables/constant')['QR_CODE_IMAGE_URL']
+  const WORKSPACE_ID: typeof import('./src/composables/constant')['WORKSPACE_ID']
+  const _base64ToBlobUrl: typeof import('./src/composables/utils')['_base64ToBlobUrl']
+  const _workspaceAutoZoom: typeof import('./src/composables/canvas')['_workspaceAutoZoom']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const backgroundImage: typeof import('./src/composables/store')['backgroundImage']
+  const canvasAddElement: typeof import('./src/composables/canvas')['canvasAddElement']
+  const canvasInitWorkspace: typeof import('./src/composables/canvas')['canvasInitWorkspace']
+  const canvasSetBackgroundByUrl: typeof import('./src/composables/canvas')['canvasSetBackgroundByUrl']
+  const canvasSpliceElementListAndBackground: typeof import('./src/composables/canvas')['canvasSpliceElementListAndBackground']
+  const canvasTemplateTextValues: typeof import('./src/composables/store')['canvasTemplateTextValues']
+  const canvasToImageUrl: typeof import('./src/composables/canvas')['canvasToImageUrl']
+  const canvasWorkspaceAutoZoom: typeof import('./src/composables/canvas')['canvasWorkspaceAutoZoom']
   const clipboardText: typeof import('./src/composables/utils')['clipboardText']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
@@ -52,6 +70,8 @@ declare global {
   const h: typeof import('vue')['h']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const imageBase64: typeof import('./src/composables/constant')['imageBase64']
+  const initCanvasWorkspace: typeof import('./src/composables/canvas')['initCanvasWorkspace']
+  const initStoreCanvasProps: typeof import('./src/composables/init')['initStoreCanvasProps']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
   const insertImgFile: typeof import('./src/composables/utils')['insertImgFile']
@@ -107,6 +127,14 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const storeCanvas: typeof import('./src/composables/store')['storeCanvas']
+  const storeCanvasBackgroundImage: typeof import('./src/composables/store')['storeCanvasBackgroundImage']
+  const storeCanvasElementList: typeof import('./src/composables/store')['storeCanvasElementList']
+  const storeCanvasElementListIds: typeof import('./src/composables/store')['storeCanvasElementListIds']
+  const storeCanvasProps: typeof import('./src/composables/store')['storeCanvasProps']
+  const storeCanvasStatus: typeof import('./src/composables/store')['storeCanvasStatus']
+  const storeCanvasTemplateTextValues: typeof import('./src/composables/store')['storeCanvasTemplateTextValues']
+  const storeElementList: typeof import('./src/composables/store')['storeElementList']
   const storeWorkspacePropsForm: typeof import('./src/composables/store')['storeWorkspacePropsForm']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
@@ -308,6 +336,7 @@ declare global {
   const watchTriggerable: typeof import('@vueuse/core')['watchTriggerable']
   const watchWithFilter: typeof import('@vueuse/core')['watchWithFilter']
   const whenever: typeof import('@vueuse/core')['whenever']
+  const workspaceAutoZoom: typeof import('./src/composables/canvas')['workspaceAutoZoom']
 }
 // for type re-export
 declare global {
@@ -319,10 +348,26 @@ declare global {
 import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
+    readonly BACKGROUND_ID: UnwrapRef<typeof import('./src/composables/constant')['BACKGROUND_ID']>
+    readonly DEFAULT_IMAGE_OPTIONS: UnwrapRef<typeof import('./src/composables/constant')['DEFAULT_IMAGE_OPTIONS']>
+    readonly DEFAULT_TEXT_OPTIONS: UnwrapRef<typeof import('./src/composables/constant')['DEFAULT_TEXT_OPTIONS']>
+    readonly ELEMENT_LIST: UnwrapRef<typeof import('./src/composables/constant')['ELEMENT_LIST']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly FABRIC_HEIGHT: UnwrapRef<typeof import('./src/composables/constant')['FABRIC_HEIGHT']>
+    readonly FABRIC_WIDTH: UnwrapRef<typeof import('./src/composables/constant')['FABRIC_WIDTH']>
     readonly MOCK_DATA: UnwrapRef<typeof import('./src/composables/constant')['MOCK_DATA']>
+    readonly PREVIEW_URL_OPTIONS: UnwrapRef<typeof import('./src/composables/constant')['PREVIEW_URL_OPTIONS']>
+    readonly QR_CODE_IMAGE_URL: UnwrapRef<typeof import('./src/composables/constant')['QR_CODE_IMAGE_URL']>
+    readonly WORKSPACE_ID: UnwrapRef<typeof import('./src/composables/constant')['WORKSPACE_ID']>
+    readonly _base64ToBlobUrl: UnwrapRef<typeof import('./src/composables/utils')['_base64ToBlobUrl']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly canvasAddElement: UnwrapRef<typeof import('./src/composables/canvas')['canvasAddElement']>
+    readonly canvasInitWorkspace: UnwrapRef<typeof import('./src/composables/canvas')['canvasInitWorkspace']>
+    readonly canvasSetBackgroundByUrl: UnwrapRef<typeof import('./src/composables/canvas')['canvasSetBackgroundByUrl']>
+    readonly canvasSpliceElementListAndBackground: UnwrapRef<typeof import('./src/composables/canvas')['canvasSpliceElementListAndBackground']>
+    readonly canvasToImageUrl: UnwrapRef<typeof import('./src/composables/canvas')['canvasToImageUrl']>
+    readonly canvasWorkspaceAutoZoom: UnwrapRef<typeof import('./src/composables/canvas')['canvasWorkspaceAutoZoom']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -351,6 +396,7 @@ declare module 'vue' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
+    readonly initStoreCanvasProps: UnwrapRef<typeof import('./src/composables/init')['initStoreCanvasProps']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDark: UnwrapRef<typeof import('./src/composables/dark')['isDark']>
@@ -403,6 +449,12 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly storeCanvas: UnwrapRef<typeof import('./src/composables/store')['storeCanvas']>
+    readonly storeCanvasBackgroundImage: UnwrapRef<typeof import('./src/composables/store')['storeCanvasBackgroundImage']>
+    readonly storeCanvasElementListIds: UnwrapRef<typeof import('./src/composables/store')['storeCanvasElementListIds']>
+    readonly storeCanvasProps: UnwrapRef<typeof import('./src/composables/store')['storeCanvasProps']>
+    readonly storeCanvasStatus: UnwrapRef<typeof import('./src/composables/store')['storeCanvasStatus']>
+    readonly storeElementList: UnwrapRef<typeof import('./src/composables/store')['storeElementList']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -480,8 +532,6 @@ declare module 'vue' {
     readonly useEventListener: UnwrapRef<typeof import('@vueuse/core')['useEventListener']>
     readonly useEventSource: UnwrapRef<typeof import('@vueuse/core')['useEventSource']>
     readonly useEyeDropper: UnwrapRef<typeof import('@vueuse/core')['useEyeDropper']>
-    readonly useFabric: UnwrapRef<typeof import('./src/composables/fabric')['useFabric']>
-    readonly useFabricStore: UnwrapRef<typeof import('./src/composables/store')['useFabricStore']>
     readonly useFavicon: UnwrapRef<typeof import('@vueuse/core')['useFavicon']>
     readonly useFetch: UnwrapRef<typeof import('@vueuse/core')['useFetch']>
     readonly useFileDialog: UnwrapRef<typeof import('@vueuse/core')['useFileDialog']>
@@ -606,10 +656,26 @@ declare module 'vue' {
 }
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
+    readonly BACKGROUND_ID: UnwrapRef<typeof import('./src/composables/constant')['BACKGROUND_ID']>
+    readonly DEFAULT_IMAGE_OPTIONS: UnwrapRef<typeof import('./src/composables/constant')['DEFAULT_IMAGE_OPTIONS']>
+    readonly DEFAULT_TEXT_OPTIONS: UnwrapRef<typeof import('./src/composables/constant')['DEFAULT_TEXT_OPTIONS']>
+    readonly ELEMENT_LIST: UnwrapRef<typeof import('./src/composables/constant')['ELEMENT_LIST']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly FABRIC_HEIGHT: UnwrapRef<typeof import('./src/composables/constant')['FABRIC_HEIGHT']>
+    readonly FABRIC_WIDTH: UnwrapRef<typeof import('./src/composables/constant')['FABRIC_WIDTH']>
     readonly MOCK_DATA: UnwrapRef<typeof import('./src/composables/constant')['MOCK_DATA']>
+    readonly PREVIEW_URL_OPTIONS: UnwrapRef<typeof import('./src/composables/constant')['PREVIEW_URL_OPTIONS']>
+    readonly QR_CODE_IMAGE_URL: UnwrapRef<typeof import('./src/composables/constant')['QR_CODE_IMAGE_URL']>
+    readonly WORKSPACE_ID: UnwrapRef<typeof import('./src/composables/constant')['WORKSPACE_ID']>
+    readonly _base64ToBlobUrl: UnwrapRef<typeof import('./src/composables/utils')['_base64ToBlobUrl']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly canvasAddElement: UnwrapRef<typeof import('./src/composables/canvas')['canvasAddElement']>
+    readonly canvasInitWorkspace: UnwrapRef<typeof import('./src/composables/canvas')['canvasInitWorkspace']>
+    readonly canvasSetBackgroundByUrl: UnwrapRef<typeof import('./src/composables/canvas')['canvasSetBackgroundByUrl']>
+    readonly canvasSpliceElementListAndBackground: UnwrapRef<typeof import('./src/composables/canvas')['canvasSpliceElementListAndBackground']>
+    readonly canvasToImageUrl: UnwrapRef<typeof import('./src/composables/canvas')['canvasToImageUrl']>
+    readonly canvasWorkspaceAutoZoom: UnwrapRef<typeof import('./src/composables/canvas')['canvasWorkspaceAutoZoom']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -638,6 +704,7 @@ declare module '@vue/runtime-core' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
+    readonly initStoreCanvasProps: UnwrapRef<typeof import('./src/composables/init')['initStoreCanvasProps']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDark: UnwrapRef<typeof import('./src/composables/dark')['isDark']>
@@ -690,6 +757,12 @@ declare module '@vue/runtime-core' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly storeCanvas: UnwrapRef<typeof import('./src/composables/store')['storeCanvas']>
+    readonly storeCanvasBackgroundImage: UnwrapRef<typeof import('./src/composables/store')['storeCanvasBackgroundImage']>
+    readonly storeCanvasElementListIds: UnwrapRef<typeof import('./src/composables/store')['storeCanvasElementListIds']>
+    readonly storeCanvasProps: UnwrapRef<typeof import('./src/composables/store')['storeCanvasProps']>
+    readonly storeCanvasStatus: UnwrapRef<typeof import('./src/composables/store')['storeCanvasStatus']>
+    readonly storeElementList: UnwrapRef<typeof import('./src/composables/store')['storeElementList']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -767,8 +840,6 @@ declare module '@vue/runtime-core' {
     readonly useEventListener: UnwrapRef<typeof import('@vueuse/core')['useEventListener']>
     readonly useEventSource: UnwrapRef<typeof import('@vueuse/core')['useEventSource']>
     readonly useEyeDropper: UnwrapRef<typeof import('@vueuse/core')['useEyeDropper']>
-    readonly useFabric: UnwrapRef<typeof import('./src/composables/fabric')['useFabric']>
-    readonly useFabricStore: UnwrapRef<typeof import('./src/composables/store')['useFabricStore']>
     readonly useFavicon: UnwrapRef<typeof import('@vueuse/core')['useFavicon']>
     readonly useFetch: UnwrapRef<typeof import('@vueuse/core')['useFetch']>
     readonly useFileDialog: UnwrapRef<typeof import('@vueuse/core')['useFileDialog']>
