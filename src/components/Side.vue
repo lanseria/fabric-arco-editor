@@ -105,6 +105,7 @@ onMounted(() => {
       >
         <AButton
           long
+          :loading="storeImageLoading"
           :disabled="!storeCanvasBackgroundImage || item.disabled"
           @click="handleAddElement(item)"
         >

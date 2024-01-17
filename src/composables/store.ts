@@ -1,5 +1,7 @@
 import type { CanvasElementProps } from './types'
 
+export const storeImageLoading = ref(false)
+
 export const storeCanvasStatus = ref<'idle' | 'processing' | 'zooming'>('idle')
 
 export const storeCanvasProps = ref(initStoreCanvasProps())

@@ -258,6 +258,7 @@ export function canvasAddElement(record: CanvasObjects) {
       triggerRef(storeCanvas)
     }
     if (record.type === 'image' && record.id === 'QR_CODE') {
+      storeImageLoading.value = true
       fabric.Image.fromURL(QR_CODE_IMAGE_URL, (imgInstance) => {
         canvas.add(imgInstance.set({
           left: workspace.left! + (record.left ?? workspace.width! / 2), // left
@@ -270,6 +271,7 @@ export function canvasAddElement(record: CanvasObjects) {
         }))
         canvas.setActiveObject(imgInstance)
         canvas.renderAll()
+        storeImageLoading.value = false
         triggerRef(storeCanvas)
       })
     }

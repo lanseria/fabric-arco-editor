@@ -135,6 +135,7 @@ declare global {
   const storeCanvasStatus: typeof import('./src/composables/store')['storeCanvasStatus']
   const storeCanvasTemplateTextValues: typeof import('./src/composables/store')['storeCanvasTemplateTextValues']
   const storeElementList: typeof import('./src/composables/store')['storeElementList']
+  const storeImageLoading: typeof import('./src/composables/store')['storeImageLoading']
   const storeWorkspacePropsForm: typeof import('./src/composables/store')['storeWorkspacePropsForm']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
@@ -455,6 +456,7 @@ declare module 'vue' {
     readonly storeCanvasProps: UnwrapRef<typeof import('./src/composables/store')['storeCanvasProps']>
     readonly storeCanvasStatus: UnwrapRef<typeof import('./src/composables/store')['storeCanvasStatus']>
     readonly storeElementList: UnwrapRef<typeof import('./src/composables/store')['storeElementList']>
+    readonly storeImageLoading: UnwrapRef<typeof import('./src/composables/store')['storeImageLoading']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -763,6 +765,7 @@ declare module '@vue/runtime-core' {
     readonly storeCanvasProps: UnwrapRef<typeof import('./src/composables/store')['storeCanvasProps']>
     readonly storeCanvasStatus: UnwrapRef<typeof import('./src/composables/store')['storeCanvasStatus']>
     readonly storeElementList: UnwrapRef<typeof import('./src/composables/store')['storeElementList']>
+    readonly storeImageLoading: UnwrapRef<typeof import('./src/composables/store')['storeImageLoading']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
