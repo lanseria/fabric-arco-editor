@@ -4,6 +4,8 @@
 
 This project is a simple frontend demo built using `fabric.js` and `vue.js`, with `arco-design` as the framework. The webpage primarily serves as a designer for a certificate template.
 
+![Demo](docs/demo.jpg)
+
 ## 当前的功能
 
 - 首先，会有一个画布
